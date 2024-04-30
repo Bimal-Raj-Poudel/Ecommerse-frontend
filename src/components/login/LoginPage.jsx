@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Register from '../register/Register';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -10,15 +12,17 @@ const LoginPage = () => {
     const newErrors = {};
     if (!username) newErrors.username = 'Username is required.';
     if (!password) newErrors.password = 'Password is required.';
+
+
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 6) return;
-    // Handle login logic
-    
+    // Handlelogin logic
+
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-black">
-      <div className="bg-white p-10 rounded shadow w-full max-w-xs">
+    <div className="min-h-screen flex items-center w-full justify-center shadow-white-lg bg-gray-100">
+      <div className= "bg-white p-10 rounded shadow-lg w-full max-w-xs ">
         <form onSubmit={handleLogin}>
           <div className="mb-5">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="username">
@@ -48,6 +52,11 @@ const LoginPage = () => {
             />
             {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
           </div>
+          <div className="text-center">
+            <Link className="inline-block text-md text-black-500 align-baseline hover:outline-stone-600 hover:text-blue-900" to="/register">
+              Register Here </Link>
+          </div>
+          <br />
           <div className="mb-6 text-center">
             <button
               className="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
@@ -56,13 +65,10 @@ const LoginPage = () => {
               Log In
             </button>
           </div>
+          
           <div className="text-center">
-            <a
-              className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-              href="#"
-            >
-              Forgot Password?
-            </a>
+            <Link className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" to={"#"}>
+              Forgot Password </Link>
           </div>
         </form>
       </div>
