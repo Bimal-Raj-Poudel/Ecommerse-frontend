@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import logo from "../picture/logo.png";
 import { Link } from "react-router-dom";
-import LoginPage from "../login/LoginPage";
 
 
 
 const Navbar = () => {
   const [active, setActive] = useState("blog");
 
-  return (
-    <nav className="flex items-center justify-between flex-wrap bg-gray-100  shadow-xl p-6">
-      <div className="flex items-center flex-shrink-0 text-black mr-6">
+  return (<>
+  
+    <nav className="flex fixed top-0 z-10 w-full h-40 items-center justify-between flex-wrap bg-gray-100  shadow-xl p-6">
+      <div className="flex items-center  flex-shrink-0 text-black mr-6">
         <img src={logo} alt="Company Logo" className="rounded-xl h-20 w-20 mr-2 shadow-md " />
         <span className="font-semibold text-xl tracking-tight focus:font-thin ">
           Company Name
@@ -78,6 +78,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

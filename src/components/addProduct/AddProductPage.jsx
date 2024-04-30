@@ -1,22 +1,56 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddProductPage = () => {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
+  const [categoryId, setCategoryId] = useState(1);
   const [image, setImage] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleCategoryChange = (e) => {
+    setCategoryId(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission...
+
+    const productData = {
+      productName: productName,
+      price: price,
+      productDescription: productDescription,
+    };
+
+    try{
+      const response = await axios.post(`http://localhost:8080/api/product/user/11/category/${categoryId}`,productData);
+
+      if(response.status === 201){
+        setProductName('')
+        setProductDescription('')
+        setPrice('')
+        navigate('/products')
+        alert("Product added !!!");
+      }
+    } catch(error) {
+      console.log(error.response.data)
+      if(error.response && error.response.status === 400){
+       const {price, productDescription, productName} = error.response.data;
+        alert("Price : "+price +" ProductDescription : "+ productDescription);
+      }
+    }
+
+    // const response = await axios.post()
   };
 
   return (
-    <div className=" flex h-screen w-screen  justify-center bg-gray-100 py-12 px-4">
+    <div className=" flex flex-col h-screen w-screen  items-center justify-center bg-gray-100 py-12 px-4">
       <div className="h-3/5  py-3 px-5 items-center justify-center rounded-md border-2px-solid shadow-xl border-gray-100 relative">
         <form onSubmit={handleSubmit}>
           <label htmlFor="productName">
@@ -27,7 +61,6 @@ const AddProductPage = () => {
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               className="relative block w-full mx-3 px-4 py-3 border border-gray-300 shadow-black placeholder:font-semibold placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none   focus:ring-indigo-500 focus:border-indigo-500"
-              required
             />
           </label>
           <br />
@@ -38,8 +71,7 @@ const AddProductPage = () => {
               value={productDescription}
               onChange={(e) => setProductDescription(e.target.value)}
               className="relative row-span-10 block w-full px-4 py-3 border overflow-hidden  m-3 border-gray-300 shadow-black placeholder:font-semibold placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none   focus:ring-indigo-500 focus:border-indigo-500"
-             rows="2"
-              required
+              rows="2"
             />
           </label>
           <label htmlFor="price">
@@ -50,15 +82,28 @@ const AddProductPage = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               className="relative block w-full px-4 py-3  m-3 border border-gray-300 shadow-black placeholder:font-semibold placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none   focus:ring-indigo-500 focus:border-indigo-500"
-              required
             />
           </label>
+          <label for="category">Choose a Category:</label>
+          <select
+            name="category"
+            id="category"
+            value={categoryId}
+            onChange={handleCategoryChange}
+          >
+            <option value="1" selected>
+              Electronics
+            </option>
+            <option value="2">Stationary</option>
+            <option value="3">Utensils</option>
+            <option value="4">Clothing</option>
+          </select>{" "}
+          <br />
           <label htmlFor="image">
             Image:
             <input
               type="file"
               onChange={handleImageChange}
-              required
               className="relative block w-full px-4 py-3  m-3 border border-gray-400 shadow-black placeholder:font-semibold placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none   focus:ring-indigo-500 focus:border-indigo-500"
             />
           </label>
